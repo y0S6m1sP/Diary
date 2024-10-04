@@ -14,11 +14,12 @@ class DiaryOutlineButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
-        backgroundColor: Theme.of(context).colorScheme.surface,
+        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         side: const BorderSide(
           color: Colors.black,
           width: 2,
         ),
+        minimumSize: const Size(double.infinity, 0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(20),
         ),
