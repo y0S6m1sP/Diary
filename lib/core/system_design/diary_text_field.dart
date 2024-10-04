@@ -8,6 +8,7 @@ class DiaryTextField extends StatelessWidget {
     this.errorText,
     this.prefixIcon,
     this.suffixIcon,
+    this.onChanged
   });
 
   final String? title;
@@ -15,6 +16,7 @@ class DiaryTextField extends StatelessWidget {
   final String? errorText;
   final Widget? prefixIcon;
   final Widget? suffixIcon;
+  final Function(String)? onChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -29,6 +31,7 @@ class DiaryTextField extends StatelessWidget {
           const SizedBox(height: 4),
         ],
         TextField(
+          onChanged: onChanged,
           decoration: InputDecoration(
             prefixIcon: prefixIcon,
             suffixIcon: suffixIcon,
