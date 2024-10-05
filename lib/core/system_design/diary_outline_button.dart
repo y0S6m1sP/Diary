@@ -17,7 +17,7 @@ class DiaryOutlineButton extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.primaryContainer,
         side: const BorderSide(
           color: Colors.black,
-          width: 2,
+          width: 1,
         ),
         minimumSize: const Size(double.infinity, 0),
         shape: RoundedRectangleBorder(

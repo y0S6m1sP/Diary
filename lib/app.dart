@@ -1,4 +1,5 @@
 import 'package:diary/app_bloc.dart';
+import 'package:diary/app_event.dart';
 import 'package:diary/app_state.dart';
 import 'package:diary/domain/repository/auth_repository.dart';
 import 'package:diary/features/auth/onboard/onboard_screen.dart';
@@ -18,10 +19,10 @@ class App extends StatelessWidget {
     return RepositoryProvider.value(
       value: _authRepository,
       child: BlocProvider(
-        lazy: false,
-        create: (_) => AppBloc(authRepository: _authRepository),
-        child: const AppView()
-      ),
+          lazy: false,
+          create: (_) => AppBloc(authRepository: _authRepository)
+            ..add(const AppUserSubcriptionRequested()),
+          child: const AppView()),
     );
   }
 }

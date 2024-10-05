@@ -11,6 +11,9 @@ class DiaryTextField extends StatelessWidget {
     this.onChanged,
     this.onSuffixIconPressed,
     this.obscureText = false,
+    this.isBorder = true,
+    this.singleLine = true,
+    this.fontSize,
   });
 
   final String? title;
@@ -21,6 +24,9 @@ class DiaryTextField extends StatelessWidget {
   final Function(String)? onChanged;
   final Function()? onSuffixIconPressed;
   final bool obscureText;
+  final bool isBorder;
+  final bool singleLine;
+  final double? fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -36,22 +42,26 @@ class DiaryTextField extends StatelessWidget {
         ],
         TextField(
           onChanged: onChanged,
+          style: TextStyle(fontSize: fontSize ?? 14),
           obscureText: obscureText,
           autocorrect: false,
           enableSuggestions: false,
+          maxLines: singleLine ? 1 : null,
           decoration: InputDecoration(
             prefixIcon: prefixIcon,
             suffixIcon: suffixIcon != null
-              ? IconButton(
-                onPressed: onSuffixIconPressed,
-                icon: suffixIcon!,
-                )
-              : null,
+                ? IconButton(
+                    onPressed: onSuffixIconPressed,
+                    icon: suffixIcon!,
+                  )
+                : null,
             hintText: hintText,
             errorText: errorText,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(20),
-            ),
+            border: isBorder
+                ? OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  )
+                : InputBorder.none,
           ),
         )
       ],

@@ -1,3 +1,4 @@
+import 'package:diary/features/diary/add_diary/add_diary_screen.dart';
 import 'package:flutter/material.dart';
 
 class OverviewScreen extends StatelessWidget {
@@ -5,14 +6,65 @@ class OverviewScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SafeArea(
+    return Scaffold(
+      appBar: AppBar(
+        title: const _AppBarTitle(),
+        automaticallyImplyLeading: false,
+        actions: const [
+          _AddDiaryButton(),
+        ],
+      ),
+      body: const SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            children: const [
-              Text('Overview Screen'),
-            ],
+          padding: EdgeInsets.all(16.0),
+          child: Center(
+            child: Text('Overview Screen'),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _AppBarTitle extends StatelessWidget {
+  const _AppBarTitle({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Text('your Diary');
+  }
+}
+
+class _AddDiaryButton extends StatelessWidget {
+  const _AddDiaryButton({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Hero(
+      tag: 'add_diary',
+      child: IconButton(
+        onPressed: () {
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (ctx) => const AddDiaryScreen(),
+            ),
+          );
+        },
+        icon: AspectRatio(
+          aspectRatio: 1,
+          child: Container(
+            height: double.infinity,
+            decoration: BoxDecoration(
+              border: Border.all(
+                color: Colors.black,
+                width: 1,
+              ),
+              borderRadius: BorderRadius.circular(10),
+            ),
+            child: const Icon(
+              Icons.add,
+              color: Colors.black,
+            ),
           ),
         ),
       ),
