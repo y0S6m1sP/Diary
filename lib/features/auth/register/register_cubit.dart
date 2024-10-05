@@ -16,6 +16,14 @@ class RegisterCubit extends Cubit<RegisterState> {
     emit(state.copyWith(password: password));
   }
 
+  void usernameChanged(String username) {
+    emit(state.copyWith(username: username));
+  }
+
+  void togglePasswordVisibility() {
+    emit(state.copyWith(isPasswordVisible: !state.isPasswordVisible));
+  }
+
   Future<void> signUp() async {
     try {
       await _authRepository.signUp(

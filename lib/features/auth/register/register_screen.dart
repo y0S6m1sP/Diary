@@ -22,7 +22,7 @@ class RegisterScreen extends StatelessWidget {
             create: (_) => RegisterCubit(
               context.read<AuthRepository>(),
             ),
-            child: const RegisterContent(),
+            child: _RegisterContent(),
           ),
         ),
       ),
@@ -30,21 +30,15 @@ class RegisterScreen extends StatelessWidget {
   }
 }
 
-class RegisterContent extends StatelessWidget {
-  const RegisterContent({super.key});
-
+class _RegisterContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<RegisterCubit, RegisterState>(
       listener: (context, state) {},
       child: Column(
         children: [
-          // const DiaryTextField(
-          //   prefixIcon: Icon(Icons.person_outline),
-          //   title: 'Username',
-          //   hintText: 'Bob',
-          // ),
-          // const SizedBox(height: 16),
+          _UsernameInput(),
+          const SizedBox(height: 16),
           _EmailInput(),
           const SizedBox(height: 16),
           _PasswordInput(),
@@ -56,11 +50,23 @@ class RegisterContent extends StatelessWidget {
   }
 }
 
+class _UsernameInput extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return DiaryTextField(
+      onChanged: (username) =>
+          context.read<RegisterCubit>().usernameChanged(username),
+      prefixIcon: const Icon(Icons.person_outline),
+      title: 'Username',
+      hintText: 'Bob',
+    );
+  }
+}
+
 class _EmailInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DiaryTextField(
-      key: const Key('registerForm_emailInput_textField'),
       onChanged: (email) => context.read<RegisterCubit>().emailChanged(email),
       prefixIcon: const Icon(Icons.email_outlined),
       title: 'Email',
@@ -72,12 +78,20 @@ class _EmailInput extends StatelessWidget {
 class _PasswordInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final state = context.watch<RegisterCubit>().state;
     return DiaryTextField(
-      key: const Key('registerForm_passwordInput_textField'),
       onChanged: (password) =>
           context.read<RegisterCubit>().passwordChanged(password),
       prefixIcon: const Icon(Icons.lock_outline),
-      suffixIcon: const Icon(Icons.visibility_off_outlined),
+      suffixIcon: Icon(
+        state.isPasswordVisible
+            ? Icons.visibility_outlined
+            : Icons.visibility_off_outlined,
+      ),
+      obscureText: !state.isPasswordVisible,
+      onSuffixIconPressed: () {
+        context.read<RegisterCubit>().togglePasswordVisibility();
+      },
       title: 'Password',
       hintText: 'Password',
     );
@@ -88,7 +102,6 @@ class _SignUpButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DiaryActionButton(
-      key: const Key('registerForm_continue_raisedButton'),
       data: 'Sign Up',
       onPressed: () => context.read<RegisterCubit>().signUp(),
     );
