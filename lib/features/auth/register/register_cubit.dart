@@ -1,5 +1,5 @@
-import 'package:diary/features/auth/domain/repository/auth_repository.dart';
-import 'package:diary/features/auth/presentation/bloc/register_state.dart';
+import 'package:diary/domain/repository/auth_repository.dart';
+import 'package:diary/features/auth/register/register_state.dart';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 

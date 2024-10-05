@@ -1,4 +1,4 @@
-import 'package:diary/features/auth/domain/repository/auth_repository.dart';
+import 'package:diary/domain/repository/auth_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 final _auth = FirebaseAuth.instance;

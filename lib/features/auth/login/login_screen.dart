@@ -1,6 +1,6 @@
 import 'package:diary/core/system_design/diary_action_button.dart';
 import 'package:diary/core/system_design/diary_text_field.dart';
-import 'package:diary/features/auth/presentation/screens/register_screen.dart';
+import 'package:diary/features/auth/register/register_screen.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatelessWidget {

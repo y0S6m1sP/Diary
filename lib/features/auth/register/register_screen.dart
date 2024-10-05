@@ -1,8 +1,8 @@
 import 'package:diary/core/system_design/diary_action_button.dart';
 import 'package:diary/core/system_design/diary_text_field.dart';
-import 'package:diary/features/auth/domain/repository/auth_repository.dart';
-import 'package:diary/features/auth/presentation/bloc/register_cubit.dart';
-import 'package:diary/features/auth/presentation/bloc/register_state.dart';
+import 'package:diary/domain/repository/auth_repository.dart';
+import 'package:diary/features/auth/register/register_cubit.dart';
+import 'package:diary/features/auth/register/register_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

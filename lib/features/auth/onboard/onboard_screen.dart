@@ -1,5 +1,5 @@
 import 'package:diary/core/system_design/diary_outline_button.dart';
-import 'package:diary/features/auth/presentation/screens/login_screen.dart';
+import 'package:diary/features/auth/login/login_screen.dart';
 import 'package:flutter/material.dart';
 
 class OnboardScreen extends StatelessWidget {
