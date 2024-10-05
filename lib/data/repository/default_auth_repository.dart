@@ -1,7 +1,8 @@
 import 'package:diary/domain/repository/auth_repository.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart' as firebase_auth;
+import 'package:diary/data/model/user.dart';
 
-final _auth = FirebaseAuth.instance;
+final _auth = firebase_auth.FirebaseAuth.instance;
 
 class DefalutAuthRepository extends AuthRepository {
   @override
@@ -11,7 +12,7 @@ class DefalutAuthRepository extends AuthRepository {
         email: email,
         password: password,
       );
-    } on FirebaseAuthException catch (e) {
+    } on firebase_auth.FirebaseAuthException catch (e) {
       throw e.message!;
     }
   }
@@ -23,8 +24,25 @@ class DefalutAuthRepository extends AuthRepository {
         email: email,
         password: password,
       );
-    } on FirebaseAuthException catch (e) {
+    } on firebase_auth.FirebaseAuthException catch (e) {
       throw e.message!;
     }
+  }
+
+  @override
+  Stream<User> get user {
+    return _auth.authStateChanges().map((firebaseUser) {
+      final user = firebaseUser?.toUser ?? User.empty;
+      return user;
+    });
+  }
+
+  @override
+  get currentUser => _auth.currentUser?.toUser;
+}
+
+extension on firebase_auth.User {
+  User get toUser {
+    return User(id: uid);
   }
 }
