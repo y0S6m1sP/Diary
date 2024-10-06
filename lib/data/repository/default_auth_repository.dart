@@ -38,7 +38,7 @@ class DefalutAuthRepository extends AuthRepository {
   }
 
   @override
-  get currentUser => _auth.currentUser?.toUser;
+  get currentUser => _auth.currentUser?.toUser ?? User.empty;
 }
 
 extension on firebase_auth.User {

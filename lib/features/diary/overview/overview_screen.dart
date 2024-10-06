@@ -1,4 +1,5 @@
 import 'package:diary/features/diary/add_diary/add_diary_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class OverviewScreen extends StatelessWidget {
@@ -14,11 +15,16 @@ class OverviewScreen extends StatelessWidget {
           _AddDiaryButton(),
         ],
       ),
-      body: const SafeArea(
+      body: SafeArea(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Center(
-            child: Text('Overview Screen'),
+            child: TextButton(
+              onPressed: () {
+                FirebaseAuth.instance.signOut();
+              },
+              child: const Text('Overview Screen'),
+            ),
           ),
         ),
       ),
@@ -31,7 +37,7 @@ class _AppBarTitle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Text('your Diary');
+    return const Text('your diary');
   }
 }
 

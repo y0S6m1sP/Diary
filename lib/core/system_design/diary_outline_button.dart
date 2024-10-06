@@ -5,16 +5,19 @@ class DiaryOutlineButton extends StatelessWidget {
     super.key,
     required this.data,
     this.onPressed,
+    this.backgroundColor,
   });
 
   final Function()? onPressed;
   final String data;
+  final Color? backgroundColor;
 
   @override
   Widget build(BuildContext context) {
     return OutlinedButton(
       style: OutlinedButton.styleFrom(
-        backgroundColor: Theme.of(context).colorScheme.primaryContainer,
+        backgroundColor:
+            backgroundColor ?? Theme.of(context).colorScheme.primaryContainer,
         side: const BorderSide(
           color: Colors.black,
           width: 1,
