@@ -27,7 +27,7 @@ class OnboardScreen extends StatelessWidget {
                   DiaryOutlineButton(
                     data: 'start',
                     onPressed: () {
-                      Navigator.of(context).push(
+                      Navigator.of(context).pushReplacement(
                         MaterialPageRoute(
                           builder: (ctx) => const LoginScreen(),
                         ),

@@ -6,7 +6,7 @@ final _auth = firebase_auth.FirebaseAuth.instance;
 
 class DefalutAuthRepository extends AuthRepository {
   @override
-  Future<void> signInWithEmailAndPassword(String email, String password) async {
+  Future<void> signInWithEmailAndPassword({required String email, required String password}) async {
     try {
       await _auth.signInWithEmailAndPassword(
         email: email,
@@ -27,6 +27,11 @@ class DefalutAuthRepository extends AuthRepository {
     } on firebase_auth.FirebaseAuthException catch (e) {
       throw e.message!;
     }
+  }
+
+  @override
+  void signOut() {
+    _auth.signOut();
   }
 
   @override
