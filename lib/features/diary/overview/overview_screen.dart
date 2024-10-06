@@ -1,5 +1,4 @@
 import 'package:diary/features/diary/add_diary/add_diary_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 class OverviewScreen extends StatelessWidget {
@@ -20,9 +19,7 @@ class OverviewScreen extends StatelessWidget {
           padding: const EdgeInsets.all(16.0),
           child: Center(
             child: TextButton(
-              onPressed: () {
-                FirebaseAuth.instance.signOut();
-              },
+              onPressed: () {},
               child: const Text('Overview Screen'),
             ),
           ),

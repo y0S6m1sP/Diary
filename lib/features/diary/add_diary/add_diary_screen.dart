@@ -1,7 +1,12 @@
 import 'package:diary/core/system_design/diary_outline_button.dart';
 import 'package:diary/core/system_design/diary_text_button.dart';
 import 'package:diary/core/system_design/diary_text_field.dart';
+import 'package:diary/domain/repository/diary_repository.dart';
+import 'package:diary/features/diary/add_diary/add_diary_bloc.dart';
+import 'package:diary/features/diary/add_diary/add_diary_event.dart';
+import 'package:diary/features/diary/add_diary/add_diary_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AddDiaryScreen extends StatelessWidget {
   const AddDiaryScreen({super.key});
@@ -12,16 +17,31 @@ class AddDiaryScreen extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                _DiaryInput(),
-                const Spacer(),
-                _AdditionalButton(),
-                const Spacer(),
-                _ForwardButton(),
-              ]),
+          child: BlocProvider(
+            create: (_) => AddDiaryBloc(
+              diaryRepository: context.read<DiaryRepository>(),
+            ),
+            child: _AddDiaryContent(),
+          ),
         ),
+      ),
+    );
+  }
+}
+
+class _AddDiaryContent extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return BlocListener<AddDiaryBloc, AddDiaryState>(
+      listener: (context, state) {},
+      child: Column(
+        children: [
+          _DiaryInput(),
+          const Spacer(),
+          _AdditionalButton(),
+          const Spacer(),
+          _ForwardButton(),
+        ],
       ),
     );
   }
@@ -30,6 +50,7 @@ class AddDiaryScreen extends StatelessWidget {
 class _DiaryInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final diaryBloc = context.read<AddDiaryBloc>();
     return Hero(
       tag: 'add_diary',
       child: Material(
@@ -40,28 +61,62 @@ class _DiaryInput extends StatelessWidget {
             border: Border.all(color: Colors.black),
             borderRadius: BorderRadius.circular(40),
           ),
-          child: const Padding(
-            padding: EdgeInsets.all(24.0),
+          child: Padding(
+            padding: const EdgeInsets.all(24.0),
             child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  DiaryTextField(
-                    hintText: 'title',
-                    isBorder: false,
-                    fontSize: 32,
-                  ),
-                  DiaryTextField(
-                    hintText: 'content',
-                    isBorder: false,
-                    singleLine: false,
-                  ),
-                ],
+              child: BlocProvider.value(
+                value: diaryBloc,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _TitleInput(),
+                    _ContentInput(),
+                    const SizedBox(height: 16),
+                    BlocBuilder<AddDiaryBloc, AddDiaryState>(
+                      builder: (context, state) {
+                        if (state.image != null) {
+                          return ClipRRect(
+                            borderRadius: BorderRadius.circular(20),
+                            child: Image.file(state.image!),
+                          );
+                        }
+                        return const SizedBox.shrink();
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class _TitleInput extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return DiaryTextField(
+      onChanged: (title) =>
+          context.read<AddDiaryBloc>().add(DiaryTitleChanged(title)),
+      hintText: 'title',
+      isBorder: false,
+      fontSize: 32,
+    );
+  }
+}
+
+class _ContentInput extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return DiaryTextField(
+      onChanged: (title) =>
+          context.read<AddDiaryBloc>().add(DiaryContentChanged(title)),
+      hintText: 'content',
+      isBorder: false,
+      singleLine: false,
+      fontSize: 16,
     );
   }
 }
@@ -81,7 +136,9 @@ class _AdditionalButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                context.read<AddDiaryBloc>().add(const PickImageRequested());
+              },
               icon: Icon(Icons.image,
                   color: Theme.of(context).colorScheme.surfaceContainer),
             ),
@@ -119,8 +176,14 @@ class _ForwardButton extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 16),
-        const Expanded(
-          child: DiaryOutlineButton(data: 'save'),
+        Expanded(
+          child: DiaryOutlineButton(
+            data: 'save',
+            onPressed: () {
+              context.read<AddDiaryBloc>().add(const DiarySubmitted());
+              // Navigator.of(context).pop();
+            },
+          ),
         ),
       ],
     );
