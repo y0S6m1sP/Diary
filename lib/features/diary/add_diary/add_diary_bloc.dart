@@ -56,6 +56,7 @@ class AddDiaryBloc extends Bloc<AddDiaryEvent, AddDiaryState> {
     _diaryRepository.addDiary(
       title: state.title,
       content: state.content,
+      image: state.image,
     );
   }
 }
