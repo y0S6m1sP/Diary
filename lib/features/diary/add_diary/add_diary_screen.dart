@@ -1,6 +1,7 @@
 import 'package:diary/core/system_design/diary_outline_button.dart';
 import 'package:diary/core/system_design/diary_text_button.dart';
 import 'package:diary/core/system_design/diary_text_field.dart';
+import 'package:diary/core/utils/api_status.dart';
 import 'package:diary/domain/repository/diary_repository.dart';
 import 'package:diary/features/diary/add_diary/add_diary_bloc.dart';
 import 'package:diary/features/diary/add_diary/add_diary_event.dart';
@@ -33,7 +34,11 @@ class _AddDiaryContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<AddDiaryBloc, AddDiaryState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if(state.status == ApiStatus.success) {
+          Navigator.of(context).pop();
+        }
+      },
       child: Column(
         children: [
           _DiaryInput(),
@@ -176,15 +181,19 @@ class _ForwardButton extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 16),
-        Expanded(
-          child: DiaryOutlineButton(
-            data: 'save',
-            onPressed: () {
-              context.read<AddDiaryBloc>().add(const DiarySubmitted());
-              // Navigator.of(context).pop();
-            },
-          ),
-        ),
+        BlocBuilder<AddDiaryBloc, AddDiaryState>(
+          builder: (context, state) {
+            return Expanded(
+              child: DiaryOutlineButton(
+                isLoading: state.status == ApiStatus.loading,
+                data: 'save',
+                onPressed: () {
+                  context.read<AddDiaryBloc>().add(const DiarySubmitted());
+                },
+              ),
+            );
+          },
+        )
       ],
     );
   }

@@ -6,11 +6,13 @@ class DiaryOutlineButton extends StatelessWidget {
     required this.data,
     this.onPressed,
     this.backgroundColor,
+    this.isLoading = false,
   });
 
   final Function()? onPressed;
   final String data;
   final Color? backgroundColor;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -32,14 +34,18 @@ class DiaryOutlineButton extends StatelessWidget {
         width: double.infinity,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 16),
-          child: Text(
-            data,
-            style: const TextStyle(
-              fontSize: 24,
-              color: Colors.black,
-            ),
-            textAlign: TextAlign.center,
-          ),
+          child: isLoading
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : Text(
+                  data,
+                  style: const TextStyle(
+                    fontSize: 24,
+                    color: Colors.black,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
         ),
       ),
     );

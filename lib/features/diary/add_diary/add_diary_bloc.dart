@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:diary/core/utils/api_status.dart';
 import 'package:diary/domain/repository/diary_repository.dart';
 import 'package:diary/features/diary/add_diary/add_diary_event.dart';
 import 'package:diary/features/diary/add_diary/add_diary_state.dart';
@@ -31,7 +32,7 @@ class AddDiaryBloc extends Bloc<AddDiaryEvent, AddDiaryState> {
   ) {
     emit(state.copyWith(content: event.content));
   }
-  
+
   Future<void> _onPickImageRequested(
     PickImageRequested event,
     Emitter<AddDiaryState> emit,
@@ -53,10 +54,17 @@ class AddDiaryBloc extends Bloc<AddDiaryEvent, AddDiaryState> {
     DiarySubmitted event,
     Emitter<AddDiaryState> emit,
   ) async {
-    _diaryRepository.addDiary(
-      title: state.title,
-      content: state.content,
-      image: state.image,
-    );
+    emit(state.copyWith(status: ApiStatus.loading));
+    try {
+      await Future.delayed(const Duration(seconds: 3));
+      await _diaryRepository.addDiary(
+        title: state.title,
+        content: state.content,
+        image: state.image,
+      );
+      emit(state.copyWith(status: ApiStatus.success));
+    } catch (e) {
+      emit(state.copyWith(status: ApiStatus.error));
+    }
   }
 }

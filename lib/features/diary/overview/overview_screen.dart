@@ -30,7 +30,7 @@ class OverviewScreen extends StatelessWidget {
 }
 
 class _AppBarTitle extends StatelessWidget {
-  const _AppBarTitle({super.key});
+  const _AppBarTitle();
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class _AppBarTitle extends StatelessWidget {
 }
 
 class _AddDiaryButton extends StatelessWidget {
-  const _AddDiaryButton({super.key});
+  const _AddDiaryButton();
 
   @override
   Widget build(BuildContext context) {
