@@ -16,6 +16,7 @@ class AddDiaryScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -72,49 +73,51 @@ class _DiaryInput extends StatelessWidget {
             child: SingleChildScrollView(
               child: BlocProvider.value(
                 value: diaryBloc,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
-                      children: [
-                        BlocBuilder<AddDiaryBloc, AddDiaryState>(
-                          builder: (context, state) {
-                            if (state.tag != null) {
-                              return Row(
-                                children: [
-                                  Chip(
-                                    backgroundColor: Theme.of(context)
-                                        .colorScheme
-                                        .tertiaryContainer,
-                                    label: Text('#${state.tag}'),
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(12),
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children: [
+                          BlocBuilder<AddDiaryBloc, AddDiaryState>(
+                            builder: (context, state) {
+                              if (state.tag != null) {
+                                return Row(
+                                  children: [
+                                    Chip(
+                                      backgroundColor: Theme.of(context)
+                                          .colorScheme
+                                          .tertiaryContainer,
+                                      label: Text('#${state.tag}'),
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(width: 16),
-                                ],
-                              );
-                            }
-                            return const SizedBox.shrink();
-                          },
-                        ),
-                        Expanded(child: _TitleInput()),
-                      ],
-                    ),
-                    _ContentInput(),
-                    const SizedBox(height: 16),
-                    BlocBuilder<AddDiaryBloc, AddDiaryState>(
-                      builder: (context, state) {
-                        if (state.image != null) {
-                          return ClipRRect(
-                            borderRadius: BorderRadius.circular(20),
-                            child: Image.file(state.image!),
-                          );
-                        }
-                        return const SizedBox.shrink();
-                      },
-                    ),
-                  ],
+                                    const SizedBox(width: 16),
+                                  ],
+                                );
+                              }
+                              return const SizedBox.shrink();
+                            },
+                          ),
+                          Expanded(child: _TitleInput()),
+                        ],
+                      ),
+                      _ContentInput(),
+                      const SizedBox(height: 16),
+                      BlocBuilder<AddDiaryBloc, AddDiaryState>(
+                        builder: (context, state) {
+                          if (state.image != null) {
+                            return ClipRRect(
+                              borderRadius: BorderRadius.circular(20),
+                              child: Image.file(state.image!),
+                            );
+                          }
+                          return const SizedBox.shrink();
+                        },
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -167,6 +170,7 @@ class _AdditionalButton extends StatelessWidget {
                 return ListTile(
                   title: Text(dummyTags[index]),
                   onTap: () {
+
                     Navigator.of(context).pop(dummyTags[index]);
                   },
                 );

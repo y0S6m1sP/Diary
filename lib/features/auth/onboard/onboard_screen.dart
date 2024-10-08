@@ -23,7 +23,7 @@ class OnboardScreen extends StatelessWidget {
                     'the\nbest\napp\nfor your\ndiary',
                     style: TextStyle(fontSize: 88),
                   ),
-                  const SizedBox(height: 24),
+                  const Spacer(),
                   DiaryOutlineButton(
                     data: 'start',
                     onPressed: () {
@@ -35,7 +35,6 @@ class OnboardScreen extends StatelessWidget {
                     },
                     backgroundColor: Theme.of(context).colorScheme.surface,
                   ),
-                  const SizedBox(height: 24),
                 ],
               ),
             ),

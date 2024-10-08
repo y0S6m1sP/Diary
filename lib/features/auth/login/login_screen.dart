@@ -18,6 +18,7 @@ class LoginScreen extends StatelessWidget {
         title: const Text('Login'),
         automaticallyImplyLeading: false,
       ),
+      resizeToAvoidBottomInset: false,
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
