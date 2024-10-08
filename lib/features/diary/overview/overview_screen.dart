@@ -1,27 +1,11 @@
 import 'package:diary/data/model/diary.dart';
+import 'package:diary/domain/repository/diary_repository.dart';
 import 'package:diary/features/diary/add_diary/add_diary_screen.dart';
+import 'package:diary/features/diary/overview/overview_cubit.dart';
+import 'package:diary/features/diary/overview/overview_state.dart';
 import 'package:diary/features/diary/overview/widgets/diary_item.dart';
 import 'package:flutter/material.dart';
-
-final List<Diary> diaries = [
-  Diary(
-      id: '1',
-      title: 'First Diary',
-      content: 'This is the',
-      createdAt: DateTime.now()),
-  Diary(
-      id: '3',
-      title: 'First Diary',
-      content: 'This is the',
-      createdAt: DateTime.now()),
-  Diary(
-      id: '2',
-      title: 'First Diary',
-      content: 'This is the',
-      image:
-          'https://firebasestorage.googleapis.com/v0/b/diary-85940.appspot.com/o/user_images%2F9c80bd8f-2888-40ab-b115-67a98b07fdbb.jpg?alt=media&token=9b7be2f8-40a8-45bd-b5d4-5fc7b3f3c122',
-      createdAt: DateTime.now()),
-];
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class OverviewScreen extends StatelessWidget {
   const OverviewScreen({super.key});
@@ -39,18 +23,25 @@ class OverviewScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: ListView.builder(
-                itemCount: diaries.length,
-                itemBuilder: (context, index) {
-                  final isFirst = index == 0 ||
-                      (index > 0 &&
-                          diaries[index].groupName !=
-                              diaries[index - 1].groupName);
-                  return DiaryItem(diary: diaries[index], isFirst: isFirst);
-                })),
+          padding: const EdgeInsets.all(16.0),
+          child: BlocProvider(
+            create: (_) => OverviewCubit(
+              context.read<DiaryRepository>(),
+            ),
+            child: const _OverviewContent(),
+          ),
+        ),
       ),
     );
+  }
+}
+
+class _OverviewContent extends StatelessWidget {
+  const _OverviewContent();
+
+  @override
+  Widget build(BuildContext context) {
+    return const _DiaryList();
   }
 }
 
@@ -99,6 +90,39 @@ class _AddDiaryButton extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _DiaryList extends StatefulWidget {
+  const _DiaryList();
+
+  @override
+  State<_DiaryList> createState() => _DiaryListState();
+}
+
+class _DiaryListState extends State<_DiaryList> {
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<OverviewCubit>().watchDiaries();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<OverviewCubit, OverviewState>(
+      builder: (context, state) {
+        return ListView.builder(
+          itemCount: state.diaries.length,
+          itemBuilder: (context, index) {
+            final diary = state.diaries[index];
+            final isFirst = index == 0 ||
+                diary.groupName != state.diaries[index - 1].groupName;
+            return DiaryItem(diary: diary, isFirst: isFirst);
+          },
+        );
+      },
     );
   }
 }

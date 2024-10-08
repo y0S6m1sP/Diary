@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:diary/data/model/diary.dart';
 import 'package:diary/domain/repository/diary_repository.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -34,8 +35,31 @@ class DefaultDiaryRepository extends DiaryRepository {
         'title': title,
         'content': content,
         'image': imageUrl,
-        'timestamp': FieldValue.serverTimestamp(),
+        'createdAt': FieldValue.serverTimestamp(),
       },
     );
+  }
+
+  @override
+  Stream<List<Diary>> watchDiaries() {
+    final user = _auth.currentUser;
+    return _db
+        .collection('${user?.uid}')
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map(
+          (snapshot) => snapshot.docs.map(
+            (doc) {
+              final data = doc.data();
+              return Diary(
+                id: doc.id,
+                title: data['title'],
+                content: data['content'],
+                image: data['image'],
+                createdAt: (data['createdAt'] as Timestamp).toDate(),
+              );
+            },
+          ).toList(),
+        );
   }
 }
