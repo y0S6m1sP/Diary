@@ -18,6 +18,12 @@ class DiaryContentChanged extends AddDiaryEvent {
   final String content;
 }
 
+class DiaryTagChanged extends AddDiaryEvent {
+  const DiaryTagChanged(this.tag);
+
+  final String tag;
+}
+
 class DiarySubmitted extends AddDiaryEvent {
   const DiarySubmitted();
 }

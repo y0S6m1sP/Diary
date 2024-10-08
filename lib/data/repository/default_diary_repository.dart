@@ -18,6 +18,7 @@ class DefaultDiaryRepository extends DiaryRepository {
   Future<void> addDiary({
     required String title,
     required String content,
+    String? tag,
     File? image,
   }) async {
     final user = _auth.currentUser;
@@ -35,6 +36,7 @@ class DefaultDiaryRepository extends DiaryRepository {
         'title': title,
         'content': content,
         'image': imageUrl,
+        'tag': tag,
         'createdAt': FieldValue.serverTimestamp(),
       },
     );
@@ -56,6 +58,7 @@ class DefaultDiaryRepository extends DiaryRepository {
                 title: data['title'],
                 content: data['content'],
                 image: data['image'],
+                tag: data['tag'],
                 createdAt: (data['createdAt'] as Timestamp).toDate(),
               );
             },

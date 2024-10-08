@@ -6,6 +6,7 @@ abstract class DiaryRepository {
   Future<void> addDiary({
     required String title,
     required String content,
+    String? tag,
     File? image,
   });
 

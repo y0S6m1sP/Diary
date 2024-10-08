@@ -6,6 +6,7 @@ import 'package:diary/domain/repository/diary_repository.dart';
 import 'package:diary/features/diary/add_diary/add_diary_bloc.dart';
 import 'package:diary/features/diary/add_diary/add_diary_event.dart';
 import 'package:diary/features/diary/add_diary/add_diary_state.dart';
+import 'package:diary/features/diary/overview/overview_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -35,7 +36,7 @@ class _AddDiaryContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<AddDiaryBloc, AddDiaryState>(
       listener: (context, state) {
-        if(state.status == ApiStatus.success) {
+        if (state.status == ApiStatus.success) {
           Navigator.of(context).pop();
         }
       },
@@ -74,7 +75,32 @@ class _DiaryInput extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    _TitleInput(),
+                    Row(
+                      children: [
+                        BlocBuilder<AddDiaryBloc, AddDiaryState>(
+                          builder: (context, state) {
+                            if (state.tag != null) {
+                              return Row(
+                                children: [
+                                  Chip(
+                                    backgroundColor: Theme.of(context)
+                                        .colorScheme
+                                        .tertiaryContainer,
+                                    label: Text('#${state.tag}'),
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 16),
+                                ],
+                              );
+                            }
+                            return const SizedBox.shrink();
+                          },
+                        ),
+                        Expanded(child: _TitleInput()),
+                      ],
+                    ),
                     _ContentInput(),
                     const SizedBox(height: 16),
                     BlocBuilder<AddDiaryBloc, AddDiaryState>(
@@ -129,6 +155,34 @@ class _ContentInput extends StatelessWidget {
 class _AdditionalButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    Future<void> showTagPicker() async {
+      final selectedTag = await showModalBottomSheet(
+        context: context,
+        builder: (context) {
+          return Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: ListView.builder(
+              itemCount: dummyTags.length,
+              itemBuilder: (context, index) {
+                return ListTile(
+                  title: Text(dummyTags[index]),
+                  onTap: () {
+                    Navigator.of(context).pop(dummyTags[index]);
+                  },
+                );
+              },
+            ),
+          );
+        },
+      );
+
+      if (selectedTag != null) {
+        if (context.mounted) {
+          context.read<AddDiaryBloc>().add(DiaryTagChanged(selectedTag));
+        }
+      }
+    }
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 32),
       child: Container(
@@ -149,7 +203,9 @@ class _AdditionalButton extends StatelessWidget {
             ),
             const SizedBox(width: 16),
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                showTagPicker();
+              },
               icon: Icon(Icons.format_quote,
                   color: Theme.of(context).colorScheme.surfaceContainer),
             ),

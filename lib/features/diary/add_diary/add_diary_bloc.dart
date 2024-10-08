@@ -14,6 +14,7 @@ class AddDiaryBloc extends Bloc<AddDiaryEvent, AddDiaryState> {
     on<PickImageRequested>(_onPickImageRequested);
     on<DiaryTitleChanged>(_onDiaryTitleChanged);
     on<DiaryContentChanged>(_onDiaryContentChanged);
+    on<DiaryTagChanged>(_onDiaryTagChanged);
     on<DiarySubmitted>(_onDiarySubmitted);
   }
 
@@ -31,6 +32,13 @@ class AddDiaryBloc extends Bloc<AddDiaryEvent, AddDiaryState> {
     Emitter<AddDiaryState> emit,
   ) {
     emit(state.copyWith(content: event.content));
+  }
+
+  void _onDiaryTagChanged(
+    DiaryTagChanged event,
+    Emitter<AddDiaryState> emit,
+  ) {
+    emit(state.copyWith(tag: event.tag));
   }
 
   Future<void> _onPickImageRequested(
@@ -60,6 +68,7 @@ class AddDiaryBloc extends Bloc<AddDiaryEvent, AddDiaryState> {
       await _diaryRepository.addDiary(
         title: state.title,
         content: state.content,
+        tag: state.tag,
         image: state.image,
       );
       emit(state.copyWith(status: ApiStatus.success));

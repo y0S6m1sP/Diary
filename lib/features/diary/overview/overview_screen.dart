@@ -133,7 +133,7 @@ class _DiaryListState extends State<_DiaryList> {
   }
 }
 
-final dummyTag = [
+final dummyTags = [
   'all',
   'life',
   'work',
@@ -162,7 +162,7 @@ class _DiaryTagListState extends State<_DiaryTagList> {
           scrollDirection: Axis.horizontal,
           child: Row(
             children: [
-              for (var tag in dummyTag)
+              for (var tag in dummyTags)
                 Padding(
                   padding: const EdgeInsets.only(right: 16),
                   child: InkWell(

@@ -10,6 +10,7 @@ class Diary extends Equatable {
     required this.title,
     required this.content,
     this.image,
+    this.tag,
     required this.createdAt,
   });
 
@@ -17,6 +18,7 @@ class Diary extends Equatable {
   final String title;
   final String content;
   final String? image;
+  final String? tag;
   final DateTime createdAt;
 
   String get formattedTime => formatter.format(createdAt);
@@ -24,5 +26,5 @@ class Diary extends Equatable {
   String get groupName => GroupFormatter.format(createdAt);
 
   @override
-  List<Object?> get props => [id, title, content, image, createdAt];
+  List<Object?> get props => [id, title, content, image, tag, createdAt];
 }
