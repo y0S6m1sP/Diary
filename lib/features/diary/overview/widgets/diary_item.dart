@@ -6,7 +6,7 @@ class DiaryItem extends StatelessWidget {
   const DiaryItem({super.key, required this.diary, this.isFirst = false});
 
   final Diary diary;
-  final isFirst;
+  final bool isFirst;
 
   @override
   Widget build(BuildContext context) {
@@ -16,6 +16,7 @@ class DiaryItem extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        isFirst ? const SizedBox(height: 24) : const SizedBox.shrink(),
         isFirst
             ? Text(
                 diary.groupName,

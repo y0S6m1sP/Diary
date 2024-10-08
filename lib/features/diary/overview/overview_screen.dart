@@ -6,6 +6,15 @@ import 'package:diary/features/diary/overview/widgets/diary_item.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+final dummyTags = [
+  'all',
+  'life',
+  'work',
+  'study',
+  'travel',
+  'hobby',
+];
+
 class OverviewScreen extends StatelessWidget {
   const OverviewScreen({super.key});
 
@@ -45,7 +54,6 @@ class _OverviewContent extends StatelessWidget {
       children: [
         SizedBox(height: 8),
         _DiaryTagList(),
-        SizedBox(height: 24),
         Expanded(child: _DiaryList()),
       ],
     );
@@ -119,30 +127,23 @@ class _DiaryListState extends State<_DiaryList> {
   Widget build(BuildContext context) {
     return BlocBuilder<OverviewCubit, OverviewState>(
       builder: (context, state) {
-        return ListView.builder(
-          itemCount: state.diaries.length,
-          itemBuilder: (context, index) {
-            final diary = state.diaries[index];
-            final isFirst = index == 0 ||
-                diary.groupName != state.diaries[index - 1].groupName;
-            return DiaryItem(diary: diary, isFirst: isFirst);
-          },
+        return AnimatedSwitcher(
+          duration: const Duration(milliseconds: 300),
+          child: ListView.builder(
+            key: ValueKey('key_${state.selectedTag}'),
+            itemCount: state.sortedDiaries.length,
+            itemBuilder: (context, index) {
+              final diary = state.sortedDiaries[index];
+              final isFirst = index == 0 ||
+                  diary.groupName != state.sortedDiaries[index - 1].groupName;
+              return DiaryItem(diary: diary, isFirst: isFirst);
+            },
+          ),
         );
       },
     );
   }
 }
-
-final dummyTags = [
-  'all',
-  'life',
-  'work',
-  'study',
-  'travel',
-  'hobby',
-  'test1',
-  'test2'
-];
 
 class _DiaryTagList extends StatefulWidget {
   const _DiaryTagList();

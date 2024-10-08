@@ -9,11 +9,17 @@ class OverviewCubit extends Cubit<OverviewState> {
 
   void selectedTagChanged(String tag) {
     emit(state.copyWith(selectedTag: tag));
+    if(tag == 'all') {
+      emit(state.copyWith(sortedDiaries: state.diaries));
+    } else {
+      final sortedDiaries = state.diaries.where((diary) => diary.tag == tag).toList();
+      emit(state.copyWith(sortedDiaries: sortedDiaries));
+    }
   }
 
   void watchDiaries() {
     _diaryRepository.watchDiaries().listen((diaries) {
-      emit(state.copyWith(diaries: diaries));
+      emit(state.copyWith(diaries: diaries, sortedDiaries: diaries));
     });
   }
 }
