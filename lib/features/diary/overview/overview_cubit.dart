@@ -7,9 +7,13 @@ class OverviewCubit extends Cubit<OverviewState> {
 
   final DiaryRepository _diaryRepository;
 
+  void selectedTagChanged(String tag) {
+    emit(state.copyWith(selectedTag: tag));
+  }
+
   void watchDiaries() {
     _diaryRepository.watchDiaries().listen((diaries) {
-      emit(OverviewState(diaries: diaries));
+      emit(state.copyWith(diaries: diaries));
     });
   }
 }

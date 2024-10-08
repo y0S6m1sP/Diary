@@ -1,4 +1,3 @@
-import 'package:diary/data/model/diary.dart';
 import 'package:diary/domain/repository/diary_repository.dart';
 import 'package:diary/features/diary/add_diary/add_diary_screen.dart';
 import 'package:diary/features/diary/overview/overview_cubit.dart';
@@ -41,7 +40,15 @@ class _OverviewContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const _DiaryList();
+    return const Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 8),
+        _DiaryTagList(),
+        SizedBox(height: 24),
+        Expanded(child: _DiaryList()),
+      ],
+    );
   }
 }
 
@@ -102,7 +109,6 @@ class _DiaryList extends StatefulWidget {
 }
 
 class _DiaryListState extends State<_DiaryList> {
-
   @override
   void initState() {
     super.initState();
@@ -121,6 +127,61 @@ class _DiaryListState extends State<_DiaryList> {
                 diary.groupName != state.diaries[index - 1].groupName;
             return DiaryItem(diary: diary, isFirst: isFirst);
           },
+        );
+      },
+    );
+  }
+}
+
+final dummyTag = [
+  'all',
+  'life',
+  'work',
+  'study',
+  'travel',
+  'hobby',
+  'test1',
+  'test2'
+];
+
+class _DiaryTagList extends StatefulWidget {
+  const _DiaryTagList();
+
+  @override
+  State<_DiaryTagList> createState() {
+    return _DiaryTagListState();
+  }
+}
+
+class _DiaryTagListState extends State<_DiaryTagList> {
+  @override
+  Widget build(BuildContext context) {
+    return BlocBuilder<OverviewCubit, OverviewState>(
+      builder: (context, state) {
+        return SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            children: [
+              for (var tag in dummyTag)
+                Padding(
+                  padding: const EdgeInsets.only(right: 16),
+                  child: InkWell(
+                    onTap: () {
+                      context.read<OverviewCubit>().selectedTagChanged(tag);
+                    },
+                    child: Chip(
+                      backgroundColor: state.selectedTag == tag
+                          ? Theme.of(context).colorScheme.primaryContainer
+                          : null,
+                      label: Text('#$tag'),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                    ),
+                  ),
+                ),
+            ],
+          ),
         );
       },
     );
