@@ -1,10 +1,8 @@
-import 'package:diary/src/app_injector.dart';
+import 'package:diary/src/config/app_route.dart';
 import 'package:diary/src/core/system_design/diary_action_button.dart';
 import 'package:diary/src/core/system_design/diary_text_field.dart';
 import 'package:diary/src/features/auth/presentation/login/login_cubit.dart';
 import 'package:diary/src/features/auth/presentation/login/login_state.dart';
-import 'package:diary/src/features/auth/presentation/register/register_screen.dart';
-import 'package:diary/src/features/diary/presentation/overview/overview_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -22,10 +20,7 @@ class LoginScreen extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: BlocProvider(
-            create: (_) => sl<LoginCubit>(),
-            child: _LoginContent(),
-          ),
+          child: _LoginContent(),
         ),
       ),
     );
@@ -38,11 +33,7 @@ class _LoginContent extends StatelessWidget {
     return BlocListener<LoginCubit, LoginState>(
       listener: (context, state) {
         if (state.isLoginSuccess) {
-          Navigator.of(context).pushReplacement(
-            MaterialPageRoute(
-              builder: (ctx) => const OverviewScreen(),
-            ),
-          );
+          Navigator.of(context).pushReplacementNamed(Routes.overview);
         }
       },
       child: Column(
@@ -129,11 +120,7 @@ class _SignUpText extends StatelessWidget {
         const Text('Don\'t have an account?'),
         TextButton(
           onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (ctx) => const RegisterScreen(),
-              ),
-            );
+            Navigator.of(context).pushNamed(Routes.register);
           },
           child: const Text('Sign up'),
         ),

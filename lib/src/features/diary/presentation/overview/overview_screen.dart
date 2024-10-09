@@ -1,5 +1,4 @@
-import 'package:diary/src/app_injector.dart';
-import 'package:diary/src/features/diary/presentation/add_diary/add_diary_screen.dart';
+import 'package:diary/src/config/app_route.dart';
 import 'package:diary/src/features/diary/presentation/overview/overview_cubit.dart';
 import 'package:diary/src/features/diary/presentation/overview/overview_state.dart';
 import 'package:diary/src/features/diary/presentation/overview/widgets/diary_item.dart';
@@ -29,13 +28,10 @@ class OverviewScreen extends StatelessWidget {
           _AddDiaryButton(),
         ],
       ),
-      body: SafeArea(
+      body: const SafeArea(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: BlocProvider(
-            create: (_) => sl<OverviewCubit>(),
-            child: const _OverviewContent(),
-          ),
+          padding: EdgeInsets.all(16.0),
+          child: _OverviewContent(),
         ),
       ),
     );
@@ -79,11 +75,7 @@ class _AddDiaryButton extends StatelessWidget {
       tag: 'add_diary',
       child: IconButton(
         onPressed: () {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (ctx) => const AddDiaryScreen(),
-            ),
-          );
+          Navigator.of(context).pushNamed(Routes.addDiary);
         },
         icon: AspectRatio(
           aspectRatio: 1,

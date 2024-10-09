@@ -1,5 +1,5 @@
+import 'package:diary/src/config/app_route.dart';
 import 'package:diary/src/core/system_design/diary_outline_button.dart';
-import 'package:diary/src/features/auth/presentation/login/login_screen.dart';
 import 'package:diary/src/features/auth/presentation/onboard/widgets/wavy_background.dart';
 import 'package:flutter/material.dart';
 
@@ -27,11 +27,7 @@ class OnboardScreen extends StatelessWidget {
                   DiaryOutlineButton(
                     data: 'start',
                     onPressed: () {
-                      Navigator.of(context).pushReplacement(
-                        MaterialPageRoute(
-                          builder: (ctx) => const LoginScreen(),
-                        ),
-                      );
+                      Navigator.of(context).pushReplacementNamed(Routes.login);
                     },
                     backgroundColor: Theme.of(context).colorScheme.surface,
                   ),

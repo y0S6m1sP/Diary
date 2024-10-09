@@ -1,4 +1,3 @@
-import 'package:diary/src/app_injector.dart';
 import 'package:diary/src/core/system_design/diary_outline_button.dart';
 import 'package:diary/src/core/system_design/diary_text_button.dart';
 import 'package:diary/src/core/system_design/diary_text_field.dart';
@@ -20,10 +19,7 @@ class AddDiaryScreen extends StatelessWidget {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.all(16.0),
-          child: BlocProvider(
-            create: (_) => sl<AddDiaryBloc>(),
-            child: _AddDiaryContent(),
-          ),
+          child: _AddDiaryContent(),
         ),
       ),
     );
@@ -168,7 +164,6 @@ class _AdditionalButton extends StatelessWidget {
                 return ListTile(
                   title: Text(dummyTags[index]),
                   onTap: () {
-
                     Navigator.of(context).pop(dummyTags[index]);
                   },
                 );
