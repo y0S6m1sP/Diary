@@ -1,8 +1,8 @@
 import 'package:diary/src/app_bloc.dart';
 import 'package:diary/src/app_event.dart';
 import 'package:diary/src/app_state.dart';
-import 'package:diary/src/features/auth/domain/repository/auth_repository.dart';
-import 'package:diary/src/features/diary/domain/repository/diary_repository.dart';
+import 'package:diary/src/features/auth/domain/repositories/auth_repository.dart';
+import 'package:diary/src/features/diary/domain/repositories/diary_repository.dart';
 import 'package:diary/src/features/auth/presentation/onboard/onboard_screen.dart';
 import 'package:diary/src/features/diary/presentation/overview/overview_screen.dart';
 import 'package:flutter/material.dart';

@@ -1,6 +1,6 @@
 import 'package:diary/src/app_event.dart';
 import 'package:diary/src/app_state.dart';
-import 'package:diary/src/features/auth/domain/repository/auth_repository.dart';
+import 'package:diary/src/features/auth/domain/repositories/auth_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppBloc extends Bloc<AppEvent, AppState> {

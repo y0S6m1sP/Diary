@@ -1,14 +1,8 @@
-import 'dart:io';
-
 import 'package:diary/src/features/diary/domain/entities/diary.dart';
+import 'package:diary/src/features/diary/domain/usecases/add_diary_usecase.dart';
 
 abstract class DiaryRepository {
-  Future<void> addDiary({
-    required String title,
-    required String content,
-    String? tag,
-    File? image,
-  });
+  Future<void> addDiary(AddDiaryParams params);
 
   Stream<List<Diary>> watchDiaries();
 }

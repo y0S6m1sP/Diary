@@ -1,4 +1,4 @@
-import 'package:diary/src/features/diary/domain/repository/diary_repository.dart';
+import 'package:diary/src/app_injector.dart';
 import 'package:diary/src/features/diary/presentation/add_diary/add_diary_screen.dart';
 import 'package:diary/src/features/diary/presentation/overview/overview_cubit.dart';
 import 'package:diary/src/features/diary/presentation/overview/overview_state.dart';
@@ -33,9 +33,7 @@ class OverviewScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: BlocProvider(
-            create: (_) => OverviewCubit(
-              context.read<DiaryRepository>(),
-            ),
+            create: (_) => sl<OverviewCubit>(),
             child: const _OverviewContent(),
           ),
         ),

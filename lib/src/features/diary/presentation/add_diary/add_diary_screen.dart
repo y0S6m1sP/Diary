@@ -1,8 +1,8 @@
+import 'package:diary/src/app_injector.dart';
 import 'package:diary/src/core/system_design/diary_outline_button.dart';
 import 'package:diary/src/core/system_design/diary_text_button.dart';
 import 'package:diary/src/core/system_design/diary_text_field.dart';
 import 'package:diary/src/core/utils/api_status.dart';
-import 'package:diary/src/features/diary/domain/repository/diary_repository.dart';
 import 'package:diary/src/features/diary/presentation/add_diary/add_diary_bloc.dart';
 import 'package:diary/src/features/diary/presentation/add_diary/add_diary_event.dart';
 import 'package:diary/src/features/diary/presentation/add_diary/add_diary_state.dart';
@@ -21,9 +21,7 @@ class AddDiaryScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: BlocProvider(
-            create: (_) => AddDiaryBloc(
-              diaryRepository: context.read<DiaryRepository>(),
-            ),
+            create: (_) => sl<AddDiaryBloc>(),
             child: _AddDiaryContent(),
           ),
         ),

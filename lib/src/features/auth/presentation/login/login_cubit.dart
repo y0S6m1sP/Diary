@@ -1,4 +1,4 @@
-import 'package:diary/src/features/auth/domain/repository/auth_repository.dart';
+import 'package:diary/src/features/auth/domain/repositories/auth_repository.dart';
 import 'package:diary/src/features/auth/presentation/login/login_state.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';

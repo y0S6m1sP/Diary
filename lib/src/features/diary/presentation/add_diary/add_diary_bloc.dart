@@ -1,15 +1,15 @@
 import 'dart:io';
 
 import 'package:diary/src/core/utils/api_status.dart';
-import 'package:diary/src/features/diary/domain/repository/diary_repository.dart';
+import 'package:diary/src/features/diary/domain/usecases/add_diary_usecase.dart';
 import 'package:diary/src/features/diary/presentation/add_diary/add_diary_event.dart';
 import 'package:diary/src/features/diary/presentation/add_diary/add_diary_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 
 class AddDiaryBloc extends Bloc<AddDiaryEvent, AddDiaryState> {
-  AddDiaryBloc({required DiaryRepository diaryRepository})
-      : _diaryRepository = diaryRepository,
+  AddDiaryBloc({required AddDiaryUsecase addDiaryUsecase})
+      : _addDiaryUsecase = addDiaryUsecase,
         super(const AddDiaryState()) {
     on<PickImageRequested>(_onPickImageRequested);
     on<DiaryTitleChanged>(_onDiaryTitleChanged);
@@ -18,7 +18,7 @@ class AddDiaryBloc extends Bloc<AddDiaryEvent, AddDiaryState> {
     on<DiarySubmitted>(_onDiarySubmitted);
   }
 
-  final DiaryRepository _diaryRepository;
+  final AddDiaryUsecase _addDiaryUsecase;
 
   void _onDiaryTitleChanged(
     DiaryTitleChanged event,
@@ -65,12 +65,13 @@ class AddDiaryBloc extends Bloc<AddDiaryEvent, AddDiaryState> {
     emit(state.copyWith(status: ApiStatus.loading));
     try {
       await Future.delayed(const Duration(seconds: 3));
-      await _diaryRepository.addDiary(
+      final params = AddDiaryParams(
         title: state.title,
         content: state.content,
         tag: state.tag,
         image: state.image,
       );
+      await _addDiaryUsecase(params);
       emit(state.copyWith(status: ApiStatus.success));
     } catch (e) {
       emit(state.copyWith(status: ApiStatus.error));

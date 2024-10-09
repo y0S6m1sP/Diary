@@ -1,6 +1,6 @@
 import 'package:diary/src/core/system_design/diary_action_button.dart';
 import 'package:diary/src/core/system_design/diary_text_field.dart';
-import 'package:diary/src/features/auth/domain/repository/auth_repository.dart';
+import 'package:diary/src/features/auth/domain/repositories/auth_repository.dart';
 import 'package:diary/src/features/auth/presentation/login/login_cubit.dart';
 import 'package:diary/src/features/auth/presentation/login/login_state.dart';
 import 'package:diary/src/features/auth/presentation/register/register_screen.dart';
