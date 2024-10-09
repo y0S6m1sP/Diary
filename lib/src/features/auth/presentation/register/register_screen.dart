@@ -1,3 +1,4 @@
+import 'package:diary/src/app_injector.dart';
 import 'package:diary/src/core/system_design/diary_action_button.dart';
 import 'package:diary/src/core/system_design/diary_text_field.dart';
 import 'package:diary/src/features/auth/domain/repositories/auth_repository.dart';
@@ -19,9 +20,7 @@ class RegisterScreen extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.all(16.0),
           child: BlocProvider(
-            create: (_) => RegisterCubit(
-              context.read<AuthRepository>(),
-            ),
+            create: (_) => sl<RegisterCubit>(),
             child: _RegisterContent(),
           ),
         ),

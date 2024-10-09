@@ -1,12 +1,12 @@
-import 'package:diary/src/features/auth/domain/repositories/auth_repository.dart';
+import 'package:diary/src/features/auth/domain/usecases/sign_up_usecase.dart';
 import 'package:diary/src/features/auth/presentation/register/register_state.dart';
 import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class RegisterCubit extends Cubit<RegisterState> {
-  RegisterCubit(this._authRepository) : super(const RegisterState());
+  RegisterCubit({required this.signUpUsecase}) : super(const RegisterState());
 
-  final AuthRepository _authRepository;
+  final SignUpUsecase signUpUsecase;
 
   void emailChanged(String email) {
     emit(state.copyWith(email: email));
@@ -26,10 +26,11 @@ class RegisterCubit extends Cubit<RegisterState> {
 
   Future<void> signUp() async {
     try {
-      await _authRepository.signUp(
+      final params = SignUpParams(
         email: state.email,
         password: state.password,
       );
+      await signUpUsecase(params);
     } on FirebaseAuthException catch (e) {
       throw e.message!;
     }

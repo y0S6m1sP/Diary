@@ -1,8 +1,7 @@
 import 'package:diary/src/app_bloc.dart';
 import 'package:diary/src/app_event.dart';
+import 'package:diary/src/app_injector.dart';
 import 'package:diary/src/app_state.dart';
-import 'package:diary/src/features/auth/domain/repositories/auth_repository.dart';
-import 'package:diary/src/features/diary/domain/repositories/diary_repository.dart';
 import 'package:diary/src/features/auth/presentation/onboard/onboard_screen.dart';
 import 'package:diary/src/features/diary/presentation/overview/overview_screen.dart';
 import 'package:flutter/material.dart';
@@ -12,27 +11,14 @@ import 'package:google_fonts/google_fonts.dart';
 class App extends StatelessWidget {
   const App({
     super.key,
-    required AuthRepository authRepository,
-    required DiaryRepository diaryRepository,
-  })  : _authRepository = authRepository,
-        _diaryRepository = diaryRepository;
-
-  final AuthRepository _authRepository;
-  final DiaryRepository _diaryRepository;
+  });
 
   @override
   Widget build(BuildContext context) {
-    return MultiRepositoryProvider(
-      providers: [
-        RepositoryProvider.value(value: _authRepository),
-        RepositoryProvider.value(value: _diaryRepository),
-      ],
-      child: BlocProvider(
-        lazy: false,
-        create: (_) => AppBloc(authRepository: _authRepository)
-          ..add(const AppUserSubcriptionRequested()),
-        child: const AppView(),
-      ),
+    return BlocProvider(
+      lazy: false,
+      create: (_) => sl<AppBloc>()..add(const AppUserSubcriptionRequested()),
+      child: const AppView(),
     );
   }
 }
