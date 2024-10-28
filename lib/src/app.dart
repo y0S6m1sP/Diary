@@ -20,6 +20,7 @@ class App extends StatelessWidget {
       child: BlocBuilder<AppBloc, AppState>(
         builder: (context, state) {
           return MaterialApp(
+            debugShowCheckedModeBanner: false,
             title: 'Diary',
             theme: getThemeData,
             initialRoute: state.status == AppStatus.unauthenticated
